@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title> BE NATURAL</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href ="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous" integrity="">
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous" integrity=""></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="dashboard.css">
+        <link rel="stylesheet" type="text/css" href="Css.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+   google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Woman', 'Man', 'Babies'],
+          ['2017', 100, 400, 200],
+          ['2018', 110, 400, 250],
+          ['2019', 660, 120, 300],
+          ['2020', 800, 540, 350]
+        ]);
+
+        var options = {
+          chart: {
+            title: 'PATIENTS VISITED',
+
+          },
+          bars: 'vertical' // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+
+        </head>
+        <body >
+            <!--navbar-->
+            <nav class="navbar navbar-expand-md navbar-light bg-dark ">
+                <button class="navbar-toggler ml-auto mb-2 bg-light" type="button" data-toggle="collapse" data-target="myNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                  <div class="container-fluid">
+                      <div class="row">
+        
+                          <!--topnav-->
+                          <div class=" col-xl-10 col-md-8 col-lg-9 ml-auto bg-dark  py-2 top-navbar">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                     <h4 class="text-light text-uppercase mb-0">DASHBOARD</h4>
+                                    </div>
+                                    <div class="col-md-5">
+                                     
+                                    </div>
+                                    <div class="col-md-3">
+                                        <ul class="navbar-nav">
+                                            <li class="nav-item ml-md-auto"><a href="{% url 'logout' %}" class="text-danger "  data-target="sign-out"><i class='fas fa-sign-out-alt'></i>Logout</a></li>
+                                         </ul>
+        
+        
+                                    </div>
+                                </div>
+                          </div>
+                          <!--end of topnav-->
+        
+                      </div>
+                  </div>
+                </div>
+            </nav>
+            <!--end of nav bar-->
+        
+            <div class="row">
+                          <!--sidebar-->
+                          <div class=" col-xl-2 col-lg-3 col-md-4  sidebar bg-dark ">
+                        <div class="bottom-border pb-3 m-auto text-center">
+                            <img src="{{ user.doctor.image.url }}" alt="image icon" width="150" height="150" class="rounded-circle mr-3">
+                            <div class="mt-4"><a href="{% url 'p_patientProfile' %}" class="text-white mr-2">{{ user.doctor.name }}</a></div>
+                        </div>
+                        <ul class="navbar-nav flex-column mt-4">
+                            <li class="nav-item"><a href="{% url 'd_Dashboard' %}" class="nav-link  p-3 mb-2 current text-white"><i class="fas fa-home text-light fa-lg mr-3"></i>DASHBOARD</a></li>
+                            <li class="nav-item"><a href="{% url 'd_Profile'  %}" class="nav-link p-3 mb-2 sidebar-link text-white"><i class="fas fa-user text-light fa-lg mr-3"></i>PROFILE</a></li>
+                            <li class="nav-item"><a href="{% url 'd_chat' %}" class="nav-link p-3 mb-2 sidebar-link text-white" ><i class="fas fa-envelope text-light fa-lg mr-3"></i>INBOX</a></li>
+                            <li class="nav-item"><a href="{% url 'chart' %}" class="nav-link p-3 mb-2 sidebar-link text-light"><i class="fas fa-chart-bar text-light fa-lg mr-3"></i>CHART</a></li>
+                            
+                        </ul>
+                           </div>
+                         <!--end of side bar-->
+        
+    <div id="barchart_material" style="width: 900px; height: 500px;"></div>
+
+
+<div id="piechart"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Draw the chart and set the chart values
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+  ['DISEASES', 'PATIENTS'],
+  ['ACNE', 567],
+  ['MIGRANE', 297],
+  ['WHOOPING COUGH', 400],
+  ['JOINT-PAIN', 150],
+  ['HAIRFALL', 150],
+  ['DIABETES', 150],
+  ['ARTHERITIS', 150],
+  ['ALLERGIES', 500],
+  ['INFECTION', 1200],
+]);
+
+  // Optional; add a title and set the width and height of the chart
+  var options = {'title':'DISEASES TREATED RECENTLY', 'width':800, 'height':500};
+
+
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  chart.draw(data, options);
+}
+</script>
+
+
+        </body>
+</html>
+

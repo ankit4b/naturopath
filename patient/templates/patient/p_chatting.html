@@ -1,0 +1,213 @@
+{% load static %}
+<html>
+<head>
+
+
+
+    <!-- Bootstrap CSS -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+        
+<style>
+	
+    body{
+    background-image: url('{% static "patient/853644-gorgerous-green-l.jpg"%}') ;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+    .mycontainer {
+      border: 2px solid #dedede;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    
+    .darker {
+      border-color: #ccc;
+      background-color: #ddd;
+    }
+  
+    .time-right {
+      float: right;
+      color: #aaa;
+    }
+    
+    .time-left {
+      float: left;
+      color: #999;
+    }
+    </style>
+
+</head>
+
+<body style="font-family: Arial, Helvetica, sans-serif;">
+
+    	
+    <!-- Top Logo and Heading -->
+			<!-- Top Logo and Heading -->
+	<div class="container-fluid text-white"    style="background-image: linear-gradient(to right,#000000 , #132b08, #19420e, #1d5a13);">
+    <div class="row">
+        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12 text-sm-center text-center" >
+            <a href="{% url 'p_Home' %}"><img src="{% static 'patient/logo.png' %}" class="" style="height: 150px;  box-shadow: 10px 5px 10px black;"></a>
+        </div>
+        <div
+            class="col-xl-5 col-lg-5 col-md-4 col-sm-12 col-12">
+            <h3 class="text-white text-sm-center text-center text-md-left mt-lg-5 mt-md-5 mt-xl-5 pt-lg-4 pt-xl-4 pt-md-4" style="text-align: left; letter-spacing: 3px; font-size: 50px;">Naturopath</h3>
+        </div>
+
+        <div
+            class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12 align-bottom mt-md-4">
+            <h4 class="text-white text-xl-right text-lg-center text-md-right text-md-right text-sm-center text-center mt-2 mt-lg-5 mt-md-5 mt-xl-5 pt-lg-4 pt-xl-4 pt-md-4 " style="font-size: 2vw" >Rejuvenate Mind and Body</h4>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="container m-auto">
+        <h1 class="text-center text-white" style="box-shadow: 5px 5px 5px #000000;"><b>CHATTING PAGE  </b></h1>
+    </div>
+
+    <div class="container text-center" style="box-shadow: 0 0 20px  #000000;">
+    <div class="row ml-5">
+        <div class='col-xl-6 col-lg-6 col-md-6 col-6 col-sm-6 m-auto'>
+            <div ><img src="{{ docobj.image.url }}" alt="Doctor Img" style=' border-radius: 50%;  width: 150px; height:150px'></div>
+        </div>
+        <div class='col-xl-6 col-lg-6 col-md-6 col-6 col-sm-6 m-auto'>
+            <div ><img  src="{{ user.patient.image.url }}" alt="Patient Img" style=' border-radius: 50%; width: 150px; height:150px;'></div>
+        </div>
+    </div>
+
+    <div class="row p-2 container  m-auto" style="box-shadow: 0 0 20px  #000000;">
+        <div class='col-xl-6 col-lg-6'>
+            <font size='4'><Strong>Doctor name : </Strong> {{ docobj.user.pk }} : {{ docobj.name }} </font><br>
+        </div>
+        <div class='col-xl-6 col-lg-6'>
+            <font size="4"><Strong>Patient name : </Strong> {{ request.user.pk }} : {{ user.patient.name }}</font><br>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+<div class="container mt-5 mb-5 " style="box-shadow: 0 0 20px  #000000;">
+
+<div id="chat-body" class="panel panel-default" >
+    <div class="panel-heading">Chat Box</div>
+    <div id="msg-list-div" class="panel-body" style="height: 600px;  overflow: scroll;">
+        <ul id="msg-list" class="list-group">
+
+            
+            {% include 'patient/chat_body.html' %}
+
+            <script>
+                var chatlist = document.getElementById('msg-list-div');
+                chatlist.scrollTop = chatlist.scrollHeight;
+            </script>
+        </ul>
+    </div>
+</div>
+
+
+<div id="chat-form" >
+    <div id="chat-bottom" class="input-group">
+        {% csrf_token %}
+        <input type="text" id="chat-msg" name="chat-msg" class="form-control"/>
+        <span class="input-group-btn">
+
+            <input class="btn btn-primary" id="send" type="submit" value="Send"/>
+            {% for cobj in chatobjs %}
+                {% if cobj.pat_id == request.user.pk and cobj.doc_id == docobj.user.pk %}
+                    {% if cobj.chat_status == True %}
+                        {% if cobj.closed == False %}
+                    
+                        <a href='{% url "p_chat_closed" cobj.chat_id %}' class="btn btn-warning">Close Chat</a>
+                        {% endif %}
+                    {% endif %}
+
+                {% endif %}
+            {% endfor %}
+
+        </span>
+    </div>
+</div>
+
+
+</div>
+
+
+<script>
+
+    $('#send').click( function(event){
+      event.preventDefault();
+  
+      $.ajax({
+          url :"{% url 'post' %}",
+          type : "POST",
+          data : { msgbox : $('#chat-msg').val(),
+          csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+         },
+  
+          success : function(json){
+  
+              $('#chat-msg').val('');
+  
+              $('#msg-list').append('<li class="text-right list-group-item">' + json.msg + '</li>');
+  
+          }
+      });
+  
+  
+  
+  });
+  
+  
+  
+  function getMessages(){
+  
+      $.ajax({
+        url: "{% url 'messages' %}",
+        type: "GET",
+  
+        success: function(messages) {
+          $('#msg-list').html(messages);
+          var chatlist = document.getElementById('msg-list-div');
+          chatlist.scrollTop = chatlist.scrollHeight;
+        }
+      });
+  
+  }
+  
+  
+  $(function(){
+      $('#msg-list-div').on('scroll', function(){
+          scrolling = true;
+      });
+      refreshTimer = setInterval(getMessages, 2000);
+  });
+  
+  $(document).ready(function() {
+  
+    getMessages();
+  
+  
+  });
+  
+  </script>
+  
+</body>
+</html>
+

@@ -1,0 +1,75 @@
+{% load static %}
+<html>
+<head>
+
+        <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!--	  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"></script>-->
+
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+<style>
+	   body{
+    background-image: url('{% static "patient/853644-gorgerous-green-l.jpg"%}') ;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+
+    .mycontainer {
+      border: 2px solid #dedede;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .darker {
+      border-color: #ccc;
+      background-color: #ddd;
+    }
+
+    .mycontainer::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+    </style>
+    </head>
+
+
+
+    <body>
+
+            {% for obj in chat %}
+
+                    {%if obj.sender == request.user.pk %}
+                    
+                      <div class="mycontainer darker">
+                        <li class="text-right list-group-item"><b>{{ obj.message }}</b></li>
+                      </div>
+                    
+                    {% else %}
+                        <div class="mycontainer">
+                            <li class="text-left list-group-item">{{ obj.message }}</li>
+                        </div>
+
+                    {%endif%}  
+
+                    {% empty %}
+                    <li class="text-right list-group-item">No messages yet!</li>
+            {% endfor %}
+          
+    </body>
+
+

@@ -1,0 +1,157 @@
+{% extends 'patient/p_basic.html' %}
+
+{% block title %} Homepage {% endblock %}
+
+{% load static %}
+
+{% block css %}
+
+body{
+    background-image: url('{% static "patient/853644-gorgerous-green-l.jpg"%}') ;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+	background-attachment: fixed;
+}
+
+#doclist{
+    box-shadow: 0 0 20px  #000000;
+}
+
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+  }
+
+  .dropdown-content a {
+	float: none;
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	text-align: left;
+  }
+
+  .dropdown-content a:hover {
+	background-color: #ddd;
+  }
+  
+  .dropdown:hover .dropdown-content {
+	display: block;
+  }
+
+
+{% endblock %}
+
+{% block body %}
+
+
+
+	<div class="container mt-3 " style="background-color: white; opacity: .8;">
+		<div id="filter" class=" row p-2 text-center text-white rounded" style="box-shadow: 10px 5px 10px black; background-image: linear-gradient(to bottom, #132b08, #19420e, #1d5a13, #1f7418, #1e8f1d);">
+			<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
+				
+
+				<div class="navbar text-center">
+					<div class="dropdown">
+						<button class="dropbtn" style="width: 300px;"><span>Doctor Type : </span>
+						  <i class="fa fa-caret-down"></i>
+						</button>
+						<div class="dropdown-content" style="width: 300px;">
+						  <a href="{% url 'p_searchdoctor' 0 %}">All Type</a>
+						  <a href="{% url 'p_searchdoctor' 1 %}">Acupuncture</a>
+						  <a href="{% url 'p_searchdoctor' 2 %}">Accupressure</a>
+						  <a href="{% url 'p_searchdoctor' 3 %}">Diet Therapy</a>
+						  <a href="{% url 'p_searchdoctor' 4 %}">Fasting Therapy</a>
+						  <a href="{% url 'p_searchdoctor' 5 %}">Hydrotherapy</a>
+						  <a href="{% url 'p_searchdoctor' 6 %}">Mud Therapy</a>
+						  <a href="{% url 'p_searchdoctor' 7 %}">MassoTherapy</a>
+						  <a href="{% url 'p_searchdoctor' 8 %}">Chromo Therapy</a>
+						  <a href="{% url 'p_searchdoctor' 9 %}">Air Therapy</a>
+						  <a href="{% url 'p_searchdoctor' 10 %}">Magnet Therapy</a>
+						</div>
+					  </div>
+				</div>
+				
+			</div>
+			<!-- <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" >
+				<span>Availability : </span>
+				<select>
+					<option>Online </option>
+					<option>Both Online and Off-line</option>
+				</select>
+			</div> -->
+		</div>
+
+
+		<div class="container-fluid " id="doc_area" >
+
+			<!-- style="box-shadow: 10px 5px 10px black;" -->
+
+			{% for d in doctor %}
+
+			<div class="row mt-2 mb-2 p-1"  id="doclist">
+				<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-3 m-auto text-center rounded-circle">
+					{% if d.image.url is not None %}
+					<img class=" rounded-circle" src="{{ d.image.url }}" style="width: 100px; height: 100px;" >
+					{% endif %}
+				</div>
+				<div class="col-8 col-sm-8 col-md-6 col-lg-6 col-xl-6">
+					<h4>{{ d.name }} </h4>
+					<ul>
+						<li><strong>Specialisation : </strong>{{ d.specialist }}<span></span></li>
+						<li><strong>Experience : </strong><span>{{ d.experience }} years</span></li>
+						<li><strong>Language Prefered: </strong><span>{{ d.language }} </span></li>
+						<li><strong>Hospital/Clinic(Address) : </strong><span>{{ d.address }} </span></li>
+						{% for c in consultation %}
+						{% if c.pk == d.pk %}
+							<li><strong>Consultation Time : </strong><span>{{ c.time }} </span></li>
+						{% endif %}
+					{% endfor %}
+					</ul>
+				</div>
+				<div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 m-auto text-center">
+					{% for c in consultation %}
+						{% if c.pk == d.pk %}
+							<h4 >Fees</h4><span><strong>Rs. {{ c.fees }}/-</strong> </span>
+						{% endif %}
+					{% endfor %}
+					<!-- <h4 >Consultation Fees</h4><span><strong>Rs. {{ d.fees }}/-</strong> </span> -->
+					<br><br>
+<!--					<button class="btn-success">Chat</button>-->
+					<a class="btn-success text-white p-2" href="{% url 'appointment_doc' d.pk %}">Appointment</a>
+					<a class="btn-success text-white p-2" href="{% url 'p_new_chat_req' d.pk %}">Chatting</a>
+<!--					<button class="btn-success ml-2">Appointment</button>-->
+				</div>
+			</div>
+
+			{% endfor %}
+
+
+
+
+
+
+			<script type="text/javascript">
+				function handleSelect(elm)
+				{
+				window.location = elm.value+".php";
+				}
+				</script>
+
+
+
+
+
+
+			
+
+		</div>
+
+	</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+
+
+{% extends 'patient/p_basic.html' %}
+
+{% block title %} Chat Request Section {% endblock %}
+
+{% load static %}
+
+{% block css %}
+
+body{
+    background-image: url('{% static "patient/853644-gorgerous-green-l.jpg"%}') ;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+	background-attachment: fixed;
+}
+
+#applist{
+    box-shadow: 0 0 20px  #000000;
+}
+
+
+
+{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="w-75 m-auto">
+        <div class="container text-center pt-4 text-white">
+            <h1 style="text-shadow: 2px 2px 5px black;"><b>CHATTING REQUEST PAGE </b></h1>
+            <hr class="w-50 " style="box-shadow: 5px 5px 5px #000000;">
+        </div>
+
+
+        <div class="" >
+
+               {% for obj in objs %}
+
+
+                    {% if obj.pat_id == user.pk %}
+
+                    <div id='applist' class=" p-4 mt-3">
+                    <div class="row" >
+
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                <span><strong>Chat id : </strong> {{ obj.chat_id }} </span><br>
+                            </div>
+
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+
+
+                            {% for docobj in docobjs %}
+                                {% if docobj.pk == obj.doc_id %}
+                                    <span><strong>Doctor Name : </strong> {{ docobj.name }} </span>
+                                {% endif %}
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        {% if obj.chat_status == False and obj.reject_status == False %}
+                            <span>Chat Status : Requested</span><br>
+                        {% endif %}
+                        {% if obj.chat_status == True and obj.closed == False %}
+                            {% for docobj in docobjs %}
+                                {% if docobj.pk == obj.doc_id %}
+                                    <a class="btn-primary p-2" href="{% url 'p_chatting' docobj.user.pk %}">Chat here</a>
+                                {% endif %}
+                            {% endfor %}
+                        
+                        {% elif obj.chat_status == True and obj.closed == True %}
+                            <span class="btn-warning p-2" >Closed</span>
+
+                        {% endif %}
+
+                        {% if obj.chat_status == False and obj.reject_status == True %}
+                            <span class="btn-danger p-2">REJECTED</span>
+                        {% endif %}
+                        </div>
+                    </div>
+
+                    </div>
+
+
+
+                    {% endif %}
+
+               {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
